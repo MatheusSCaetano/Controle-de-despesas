@@ -18,7 +18,17 @@ const addTransactionIntoDOM = transaction =>{//o parametro transaction recebe o 
     li.innerHTML = `${transaction.name} <span> ${operator} R$ ${amountWithoutOperator}</span><button class="delete-btn">x</button>`
     
     // transactionsUl.innerHTML=li  --- Não podemos adicionar a li na ul deste modo pois, para realizar isto precisamos que o paramtro passado para incluir seja uma String, neste caso  a nossa li foi criado pelo js, deste modo ela vira um objeto
-    transactionsUl.prepend(li)
+    transactionsUl.append(li)
     }
 
-addTransactionIntoDOM(dummyTransactions[0])
+    const updateBalanceValues = () => {
+        const transactionAmount = dummyTransactions.map(transaction => transaction.amount)
+        console.log(transactionAmount)
+    }
+
+const init = ()=>{
+    dummyTransactions.forEach(addTransactionIntoDOM)
+    updateBalanceValues()
+}
+
+init()
