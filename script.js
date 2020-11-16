@@ -70,24 +70,32 @@ const updateLocalStorage = () => {
 
 const generateID = () => Math.round(Math.random() * 1000)
 
+const addToTransactionArray = (transactionName, transactionAmount) => {
+    transactions.push({ id: generateID(), name: transactionName, amount: +transactionAmount})
+}
+
+const cleanInputs = () =>{
+    inputTransactionName.value=''
+    inputTransactionAmount.value=''
+}
+
 const handleFormSubmit = event =>{
-    event.preventDefault()
+    event.preventDefault()//impede que o forms seja enviado e seja carregado em pagina
+
     const transactionName = inputTransactionName.value.trim()
     const transactionAmount = inputTransactionAmount.value.trim()
-
-    if(transactionName ==='' || transactionAmount ===''){
+    const isSomeInputEmpty = transactionName ==='' || transactionAmount ===''
+    
+    if(isSomeInputEmpty){
         alert('Por favor preencha os dois campos para subir uma transação')
         // validando para ver s epreencheu os dois campos
         return
     }
-    const transaction = { id: generateID(), name: transactionName, amount: +transactionAmount}
 
-    transactions.push(transaction)
+    addToTransactionArray(transactionName, transactionAmount)
     init()
     updateLocalStorage()
-
-    inputTransactionName.value=''
-    inputTransactionAmount.value=''
+    cleanInputs()
 }
 
 form.addEventListener('submit', handleFormSubmit)
