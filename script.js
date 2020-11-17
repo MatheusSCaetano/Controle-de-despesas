@@ -84,7 +84,7 @@ const handleFormSubmit = event =>{
 
     const transactionName = inputTransactionName.value.trim()
     const transactionAmount = inputTransactionAmount.value.trim()
-    const isSomeInputEmpty = transactionName ==='' || transactionAmount ===''
+    const isSomeInputEmpty = transactionName === '' || transactionAmount === ''
     
     if(isSomeInputEmpty){
         alert('Por favor preencha os dois campos para subir uma transação')
