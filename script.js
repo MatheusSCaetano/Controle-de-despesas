@@ -15,6 +15,7 @@ const removeTransaction = ID => {
     updateLocalStorage()
     init()
 }
+
 const addTransactionIntoDOM = transaction =>{//o parametro transaction recebe o objeto que representa a transação
    const operator = transaction.amount< 0 ? '-' : '+'//descobrir qual operador usar de acordo com o atributo amount do objeto
    const CSSClass = transaction.amount<0 ? 'minus' : 'plus'//armazenar qual classe adicionar a nova <li> que será add
@@ -32,22 +33,25 @@ const addTransactionIntoDOM = transaction =>{//o parametro transaction recebe o 
     transactionsUl.append(li)
     }
 
+    const getExpenses = transactionsAmounts => Math.abs( transactionsAmounts
+        .filter(value => value <0)
+        .reduce((accumulator, value) => accumulator+value,0))
+        .toFixed(2)
+
+    const getIncome = transactionsAmounts => transactionsAmounts
+    .filter(value => value > 0)
+    .reduce((accumulator, value) => accumulator+value,0)
+    .toFixed(2)//cria um outro vetor com o .filter de acordo a condição (>0 do outro vetor) - reduce vai domar os valores deste novo vetor colocando o toficed no final para ter duas casas decimais
+   
+    const getTotal = transactionsAmounts => transactionsAmounts
+    .reduce((accumulator, transaction) => accumulator + transaction, 0).toFixed(2)
+
     const updateBalanceValues = () => {
-        const transactionsAmounts = transactions
-        .map(transaction => transaction.amount)//cria um vetor com todas as propriedades transaction dos objetos do array do dummyTransaction
 
-        const total = transactionsAmounts
-        .reduce((accumulator, transaction) => accumulator + transaction, 0).toFixed(2)
-
-         const income = transactionsAmounts
-         .filter(value => value > 0)
-         .reduce((accumulator, value) => accumulator+value,0)
-         .toFixed(2)//cria um outro vetor com o .filter de acordo a condição (>0 do outro vetor) - reduce vai domar os valores deste novo vetor colocando o toficed no final para ter duas casas decimais
-        
-         const expense = Math.abs( transactionsAmounts
-         .filter(value => value <0)
-         .reduce((accumulator, value) => accumulator+value,0))
-         .toFixed(2)
+        const transactionsAmounts = transactions.map(transaction => transaction.amount)//cria um vetor com todas as propriedades transaction dos objetos do array do dummyTransaction
+        const total =  getTotal(transactionsAmounts)
+        const income = getIncome(transactionsAmounts)
+        const expense = getExpenses(transactionsAmounts)
          
          balanceDisplay.textContent = `R$ ${total}`
          incomeDisplay.textContent = `R$ ${income}`
